@@ -1,12 +1,16 @@
 pipeline {
     agent any
 
+    tools {
+        sonarQubeScanner 'SonarScanner'
+    }
+
     stages {
 
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                url: 'https://github.com/DarshGosalia/hello-python.git'
+                    url: 'https://github.com/DarshGosalia/hello-python.git'
             }
         }
 
@@ -32,17 +36,15 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                script {
-                    def scannerHome = tool 'SonarScanner'
+                withSonarQubeEnv('SonarQube') {
+                    sh '''
+                    . venv/bin/activate
 
-                    withSonarQubeEnv('SonarQube') {
-                        sh """
-                        ${scannerHome}/bin/sonar-scanner \
-                        -Dsonar.projectKey=hello-python \
-                        -Dsonar.sources=. \
-                        -Dsonar.python.version=3
-                        """
-                    }
+                    sonar-scanner \
+                    -Dsonar.projectKey=hello-python \
+                    -Dsonar.sources=. \
+                    -Dsonar.python.version=3
+                    '''
                 }
             }
         }
