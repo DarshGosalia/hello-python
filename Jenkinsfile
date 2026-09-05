@@ -5,7 +5,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git 'https://github.com/YOUR_USERNAME/hello-python.git'
+                git 'https://github.com/DarshGosalia/hello-python.git'
             }
         }
 
