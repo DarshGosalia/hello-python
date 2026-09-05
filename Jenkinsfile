@@ -12,13 +12,21 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'pip3 install -r requirements.txt'
+                sh '''
+                python3 -m venv venv
+                . venv/bin/activate
+                pip install --upgrade pip
+                pip install -r requirements.txt
+                '''
             }
         }
 
         stage('Test') {
             steps {
-                sh 'pytest'
+                sh '''
+                . venv/bin/activate
+                pytest
+                '''
             }
         }
 
@@ -26,11 +34,13 @@ pipeline {
             steps {
                 withSonarQubeEnv('sonarqube') {
                     sh '''
+                    . venv/bin/activate
+
                     sonar-scanner \
                     -Dsonar.projectKey=hello-python \
+                    -Dsonar.projectName=hello-python \
                     -Dsonar.sources=. \
-                    -Dsonar.host.url=http://http://13.232.5.163/:9000 \
-                    -Dsonar.login=squ_e9ae0a11e21b5c43bb053c5229ad7223ba4cb6f0
+                    -Dsonar.host.url=http://13.232.5.163:9000
                     '''
                 }
             }
