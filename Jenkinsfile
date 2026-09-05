@@ -33,12 +33,12 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
+
                     sh '''
-                    sonar-scanner \
-                      -Dsonar.projectKey=hello-python \
-                      -Dsonar.sources=. \
-                      -Dsonar.python.version=3 \
-                      -Dsonar.host.url=http://13.232.5.163:9000
+                    /opt/sonar-scanner/bin/sonar-scanner \
+                    -Dsonar.projectKey=hello-python \
+                    -Dsonar.sources=. \
+                    -Dsonar.python.version=3
                     '''
                 }
             }
