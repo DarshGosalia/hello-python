@@ -32,15 +32,13 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('sonarqube') {
+                withSonarQubeEnv('SonarQube') {
                     sh '''
-                    . venv/bin/activate
-
                     sonar-scanner \
-                    -Dsonar.projectKey=hello-python \
-                    -Dsonar.projectName=hello-python \
-                    -Dsonar.sources=. \
-                    -Dsonar.host.url=http://13.232.5.163:9000
+                      -Dsonar.projectKey=hello-python \
+                      -Dsonar.sources=. \
+                      -Dsonar.python.version=3 \
+                      -Dsonar.host.url=http://13.232.5.163:9000
                     '''
                 }
             }
